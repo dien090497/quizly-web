@@ -1,0 +1,23 @@
+.auth-switch{display:block;margin:15px auto 0;border:0;background:none;color:#668831;font-size:11px;font-weight:700}
+.owner-actions{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:9px;border-top:1px solid #f0f2ed}
+.owner-actions>span{font-size:9px;color:#87917f;font-weight:700}
+.owner-actions>div{display:flex;gap:12px}
+.owner-actions button{border:0;background:none;color:#637d3d;font-size:10px;font-weight:700}
+.owner-actions button:last-child{color:#a5625b}
+.private-badge{position:absolute;top:13px;right:13px;z-index:2;padding:6px 8px;border-radius:20px;background:#ffffffd9;color:#6f785f;font-size:8px;font-weight:800;letter-spacing:.5px}
+.history-modal{position:relative;background:#fff;width:min(690px,100%);max-height:90vh;overflow:auto;border-radius:15px;padding:31px 35px;box-shadow:0 20px 80px #0003}
+.history-modal h2{font-family:'Space Grotesk';font-size:29px;letter-spacing:-1px;margin:9px 0 20px}
+.history-modal h2 em{font-style:normal;color:#9dc84c}
+.history-list{display:grid;gap:10px}
+.history-card{border:1px solid #e8ebe4;border-radius:9px;padding:14px 15px}
+.history-card-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.history-date{font-size:9px;color:#89948a}
+.history-card h3{font-family:'Space Grotesk';font-size:15px;margin:5px 0 0}
+.history-pin{padding:6px 8px;border-radius:20px;background:#f1f5e8;color:#6e853f;font-size:9px;font-weight:800}
+.history-card>p{font-size:10px;color:#89948a;margin:8px 0}
+.history-winners{display:flex;flex-wrap:wrap;gap:7px}
+.history-winners span{padding:6px 8px;border-radius:6px;background:#f8f9f5;font-size:9px;color:#657063}
+.history-winners strong{margin-left:4px;color:#5c7935}
+.history-empty{text-align:center;padding:34px 10px;color:#859087;font-size:11px}
+.history-empty h3{font-family:'Space Grotesk';color:#344138;font-size:16px}
+@media(max-width:640px){.history-modal{padding:28px 19px 20px}.nav-actions .account-toggle,.nav-actions .history-toggle{display:none}.nav-actions .login-toggle,.nav-actions .pin-toggle{font-size:0;padding:8px 5px}.nav-actions .login-toggle:after{content:'Đăng nhập';font-size:9px}.nav-actions .pin-toggle:after{content:'PIN';font-size:10px}.nav-actions .mine-toggle{font-size:9px;padding:8px 4px}.nav-actions{gap:5px}.nav-actions .button{padding:10px 9px;font-size:10px}}
