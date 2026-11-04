@@ -2,6 +2,14 @@
 .card-bottom .card-play-actions button{white-space:nowrap;padding:0}
 .room-backdrop{z-index:25}
 .room-modal{position:relative;background:#fff;width:min(680px,100%);max-height:94vh;overflow:auto;border-radius:15px;padding:31px 36px 30px;box-shadow:0 20px 80px #0003}
+
+/* ── Fullscreen room ── */
+.room-fullscreen{position:fixed;inset:0;z-index:25;background:#f7f8f2;overflow-y:auto;display:flex;flex-direction:column}
+.room-exit{position:fixed;top:16px;right:20px;z-index:26;background:#fff;border:1px solid #e4e8df;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:#6b7a6c;cursor:pointer}
+.room-exit:hover{background:#f5f5f0}
+.room-inner{max-width:860px;margin:0 auto;width:100%;padding:28px 32px 48px}
+.room-wait{min-height:100vh;display:grid;place-content:center;justify-items:center;color:#6c786d}
+.room-wait h2{font-family:'Space Grotesk';font-size:20px}
 .room-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-right:24px}
 .room-heading h2{font-family:'Space Grotesk';font-size:24px;letter-spacing:-.8px;margin:8px 0 0}
 .room-pin{display:grid;justify-items:center;padding:8px 14px;border-radius:9px;background:#f3f7e9}
@@ -48,3 +56,15 @@
 .room-wait{min-height:200px;display:grid;place-content:center;justify-items:center;color:#6c786d}
 .room-wait h2{font-family:'Space Grotesk';font-size:20px}
 @media(max-width:640px){.room-modal{padding:28px 19px 21px}.room-heading h2{font-size:19px}.room-pin b{font-size:20px}.lobby-invite{gap:10px;flex-wrap:wrap}.lobby-invite small{width:100%;margin:0;text-align:left}.room-options{grid-template-columns:1fr}.room-question{font-size:21px}.room-host-controls{align-items:flex-start;flex-direction:column}.room-host-controls .button{width:100%}.card-play-actions{gap:6px}.card-bottom .card-play-actions button{font-size:9px}}
+
+/* ── Player answer status ── */
+.player-answer-status{margin-top:20px;padding:14px 16px;background:#f8faf4;border:1px solid #e8eee0;border-radius:10px}
+.player-status-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.player-status-chip{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:20px;background:#fff;border:1px solid #e4e8df;font-size:10px;color:#6b7a6c;transition:background .2s,border .2s}
+.player-status-chip.answered{background:#eef6de;border-color:#a9d658;color:#3d5a1e}
+.player-status-dot{width:8px;height:8px;border-radius:50%;background:#d5dbd0;flex:none;transition:background .2s}
+.player-status-chip.answered .player-status-dot{background:#7bbf2e}
+.player-status-name{font-weight:600}
+
+/* ── Fullscreen responsive ── */
+@media(max-width:640px){.room-inner{padding:20px 16px 40px}.room-exit{top:10px;right:10px;font-size:10px;padding:7px 10px}.room-heading h2{font-size:19px}.room-pin b{font-size:20px}.lobby-invite{gap:10px;flex-wrap:wrap}.lobby-invite small{width:100%;margin:0;text-align:left}.room-options{grid-template-columns:1fr}.room-question{font-size:21px}.room-host-controls{align-items:flex-start;flex-direction:column}.room-host-controls .button{width:100%}.card-play-actions{gap:6px}.card-bottom .card-play-actions button{font-size:9px}}

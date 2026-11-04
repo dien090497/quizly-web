@@ -5,7 +5,26 @@ export type Question = {
   timeLimitSeconds: number;
 };
 
+/** Public quiz — no correctIndex on questions */
+export type PublicQuestion = {
+  prompt: string;
+  options: string[];
+  timeLimitSeconds: number;
+};
+
+/** Public quiz returned by GET /api/quizzes */
 export type Quiz = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  ownerId: number | null;
+  isPublic: boolean;
+  questions: PublicQuestion[];
+};
+
+/** Owner-only quiz returned by GET /api/quizzes/mine and GET /api/quizzes/:id (owner) */
+export type QuizEdit = {
   id: number;
   title: string;
   description: string;
@@ -18,7 +37,7 @@ export type Quiz = {
 export type AuthSession = {
   token: string;
   expiresAt: number;
-  user: { id: number; email: string; displayName: string };
+  user: { id: number; email: string; displayName: string; avatarUrl?: string };
 };
 
 export type GameHistory = {

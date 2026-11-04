@@ -1,69 +1,34 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
-import type { AuthSession } from '../../lib/types';
+import { API } from '../../lib/config';
 
 type Props = {
-  mode: 'login' | 'register';
-  onSuccess: (session: AuthSession) => void;
   onClose: () => void;
-  onSignIn: (email: string, password: string) => Promise<AuthSession>;
-  onSignUp: (email: string, password: string, displayName: string) => Promise<AuthSession>;
-  onNotice: (msg: string) => void;
 };
 
-export default function AuthModal({ mode: initialMode, onSuccess, onClose, onSignIn, onSignUp, onNotice }: Props) {
-  const [mode, setMode] = useState(initialMode);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    try {
-      const session = mode === 'login'
-        ? await onSignIn(email, password)
-        : await onSignUp(email, password, displayName);
-      onSuccess(session);
-    } catch {
-      onNotice(mode === 'register'
-        ? 'Không tạo được tài khoản. Email có thể đã được sử dụng.'
-        : 'Email hoặc mật khẩu chưa đúng.');
-    }
+export default function AuthModal({ onClose }: Props) {
+  function loginWithGoogle() {
+    window.location.href = `${API.replace('/api', '')}/api/auth/oauth2/google`;
   }
 
   return (
     <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <form className="create-modal auth-modal" onSubmit={handleSubmit}>
+      <div className="create-modal auth-modal">
         <button type="button" className="modal-close" onClick={onClose}>×</button>
         <span className="eyebrow">QUIZLY COMMUNITY</span>
-        <h2>{mode === 'login' ? 'Chào mừng trở lại' : 'Tạo tài khoản'} <em>✳</em></h2>
-        <p>{mode === 'login' ? 'Đăng nhập để tạo và quản lý quiz của bạn.' : 'Tạo tài khoản miễn phí để lưu quiz của bạn.'}</p>
+        <h2>Chào mừng <em>✳</em></h2>
+        <p>Đăng nhập để tạo và quản lý quiz của bạn.</p>
 
-        {mode === 'register' && (
-          <label>Tên hiển thị
-            <input required minLength={2} maxLength={60} value={displayName}
-              onChange={e => setDisplayName(e.target.value)} placeholder="Tên của bạn" />
-          </label>
-        )}
-        <label>Email
-          <input type="email" required maxLength={254} value={email}
-            onChange={e => setEmail(e.target.value)} placeholder="ban@example.com" />
-        </label>
-        <label>Mật khẩu
-          <input type="password" required minLength={mode === 'register' ? 8 : 1} maxLength={72}
-            value={password} onChange={e => setPassword(e.target.value)}
-            placeholder={mode === 'register' ? 'Ít nhất 8 ký tự' : 'Mật khẩu của bạn'} />
-        </label>
-
-        <button className="button button-dark submit-button" type="submit">
-          {mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản'} <span>→</span>
+        <button className="sso-button sso-google" onClick={loginWithGoogle}>
+          <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Đăng nhập với Google
         </button>
-        <button type="button" className="auth-switch"
-          onClick={() => setMode(m => m === 'login' ? 'register' : 'login')}>
-          {mode === 'login' ? 'Chưa có tài khoản? Đăng ký' : 'Đã có tài khoản? Đăng nhập'}
-        </button>
-      </form>
+      </div>
     </div>
   );
 }

@@ -2,17 +2,16 @@
 
 import { useMemo, useState } from 'react';
 import { CARD_COLORS, CARD_SYMBOLS, CATEGORIES } from '../lib/types';
-import type { AuthSession, Quiz } from '../lib/types';
+import type { AuthSession, Quiz, QuizEdit } from '../lib/types';
 
 type Props = {
   quizzes: Quiz[];
-  myQuizzes: Quiz[];
+  myQuizzes: QuizEdit[];
   mineOnly: boolean;
   loading: boolean;
   authSession: AuthSession | null;
-  onPlay: (quiz: Quiz) => void;
   onCreateRoom: (quiz: Quiz) => void;
-  onEdit: (quiz: Quiz) => void;
+  onEdit: (quiz: QuizEdit) => void;
   onDelete: (quiz: Quiz) => void;
   onCreateQuiz: () => void;
 };
@@ -24,7 +23,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 
 export default function QuizGrid({
   quizzes, myQuizzes, mineOnly, loading, authSession,
-  onPlay, onCreateRoom, onEdit, onDelete, onCreateQuiz,
+  onCreateRoom, onEdit, onDelete, onCreateQuiz,
 }: Props) {
   const [category, setCategory] = useState('Tất cả');
   const [search, setSearch] = useState('');
@@ -33,7 +32,7 @@ export default function QuizGrid({
     (mineOnly ? myQuizzes : quizzes).filter(q =>
       (category === 'Tất cả' || q.category === category) &&
       `${q.title} ${q.description}`.toLowerCase().includes(search.toLowerCase())
-    ),
+    ) as (Quiz | QuizEdit)[],
     [quizzes, myQuizzes, mineOnly, category, search]
   );
 
@@ -88,9 +87,6 @@ export default function QuizGrid({
                 <div className="card-bottom">
                   <span>◷ 5 phút　·　✦ {quiz.questions.length} câu</span>
                   <span className="card-play-actions">
-                    <button aria-label={`Chơi ${quiz.title}`} onClick={() => onPlay(quiz)}>
-                      Chơi ngay <b>↗</b>
-                    </button>
                     <button aria-label={`Tạo phòng chơi ${quiz.title}`} onClick={() => onCreateRoom(quiz)}>
                       Phòng PIN <b>＋</b>
                     </button>
@@ -100,7 +96,7 @@ export default function QuizGrid({
                   <div className="owner-actions">
                     <span>Quiz của bạn</span>
                     <div>
-                      <button onClick={() => onEdit(quiz)}>Sửa</button>
+                      <button onClick={() => onEdit(quiz as QuizEdit)}>Sửa</button>
                       <button onClick={() => onDelete(quiz)}>Xóa</button>
                     </div>
                   </div>

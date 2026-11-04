@@ -5,7 +5,7 @@ import { useAuth } from './hooks/useAuth';
 import { useQuizzes } from './hooks/useQuizzes';
 import { useRoom } from './hooks/useRoom';
 import * as api from './lib/api';
-import type { Question, Quiz } from './lib/types';
+import type { Question, Quiz, QuizEdit } from './lib/types';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -14,14 +14,13 @@ import Toast from './components/Toast';
 import AuthModal from './components/modals/AuthModal';
 import JoinModal from './components/modals/JoinModal';
 import CreateModal from './components/modals/CreateModal';
-import PlayModal from './components/modals/PlayModal';
 import RoomModal from './components/modals/RoomModal';
 import HistoryModal from './components/modals/HistoryModal';
 
 const EMPTY_QUESTION: Question = { prompt: '', options: ['', '', '', ''], correctIndex: 0, timeLimitSeconds: 20 };
 
 export default function Home() {
-  const { authSession, signIn, signUp, signOut } = useAuth();
+  const { authSession, signOut, persistAuth } = useAuth();
   const { quizzes, myQuizzes, loading, refresh } = useQuizzes(authSession);
   const { room, roomView, setRoomView, secondsLeft, persistRoom, leaveRoom } = useRoom();
 
@@ -30,7 +29,6 @@ export default function Home() {
 
   // Auth modal
   const [authOpen, setAuthOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [createAfterAuth, setCreateAfterAuth] = useState(false);
 
   // History modal
@@ -40,7 +38,7 @@ export default function Home() {
 
   // Create/Edit modal
   const [showCreate, setShowCreate] = useState(false);
-  const [editingQuiz, setEditingQuiz] = useState<Quiz | null>(null);
+  const [editingQuiz, setEditingQuiz] = useState<QuizEdit | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Khoa học');
@@ -48,22 +46,13 @@ export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([EMPTY_QUESTION]);
 
   // Play modal
-  const [playQuiz, setPlayQuiz] = useState<Quiz | null>(null);
-
   // Join modal
   const [joinOpen, setJoinOpen] = useState(false);
 
   // ── Auth ──────────────────────────────────────────────────────────────
   function openSignIn() {
     setCreateAfterAuth(false);
-    setAuthMode('login');
     setAuthOpen(true);
-  }
-
-  function handleAuthSuccess(session: typeof authSession) {
-    setAuthOpen(false);
-    setNotice(`Xin chào, ${session!.user.displayName}!`);
-    if (createAfterAuth) { setCreateAfterAuth(false); openCreator(); }
   }
 
   function handleSignOut() { signOut(); setMineOnly(false); setNotice('Đã đăng xuất.'); }
@@ -85,13 +74,13 @@ export default function Home() {
 
   // ── Create / Edit ─────────────────────────────────────────────────────
   function openCreator() {
-    if (!authSession) { setCreateAfterAuth(true); setAuthMode('login'); setAuthOpen(true); setNotice('Đăng nhập hoặc tạo tài khoản để lưu quiz của bạn.'); return; }
+    if (!authSession) { setCreateAfterAuth(true); setAuthOpen(true); setNotice('Đăng nhập để lưu quiz của bạn.'); return; }
     setEditingQuiz(null); setTitle(''); setDescription(''); setCategory('Khoa học'); setIsPublic(true);
     setQuestions([EMPTY_QUESTION]);
     setShowCreate(true);
   }
 
-  function openEditor(quiz: Quiz) {
+  function openEditor(quiz: QuizEdit) {
     setEditingQuiz(quiz); setTitle(quiz.title); setDescription(quiz.description);
     setCategory(quiz.category); setIsPublic(quiz.isPublic);
     setQuestions(quiz.questions.map(q => ({ ...q, options: [...q.options] })));
@@ -176,7 +165,6 @@ export default function Home() {
         mineOnly={mineOnly}
         loading={loading}
         authSession={authSession}
-        onPlay={quiz => { if (!quiz.questions.length) { setNotice('Quiz này chưa có câu hỏi.'); return; } setPlayQuiz(quiz); }}
         onCreateRoom={quiz => void handleCreateRoom(quiz)}
         onEdit={openEditor}
         onDelete={quiz => void handleDelete(quiz)}
@@ -193,12 +181,7 @@ export default function Home() {
 
       {authOpen && (
         <AuthModal
-          mode={authMode}
-          onSuccess={handleAuthSuccess}
           onClose={() => { setAuthOpen(false); setCreateAfterAuth(false); }}
-          onSignIn={signIn}
-          onSignUp={signUp}
-          onNotice={setNotice}
         />
       )}
 
@@ -221,10 +204,6 @@ export default function Home() {
           onSubmit={submitQuiz}
           onClose={() => setShowCreate(false)}
         />
-      )}
-
-      {playQuiz && (
-        <PlayModal quiz={playQuiz} onClose={() => setPlayQuiz(null)} />
       )}
 
       {room && (

@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import * as api from '../lib/api';
-import type { AuthSession, Quiz } from '../lib/types';
+import type { AuthSession, Quiz, QuizEdit } from '../lib/types';
 
 export function useQuizzes(authSession: AuthSession | null) {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [myQuizzes, setMyQuizzes] = useState<Quiz[]>([]);
+  const [myQuizzes, setMyQuizzes] = useState<QuizEdit[]>([]);
   const [loading, setLoading] = useState(true);
 
   const loadQuizzes = useCallback(async () => {

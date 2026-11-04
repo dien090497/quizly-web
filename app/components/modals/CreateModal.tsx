@@ -2,10 +2,10 @@
 
 import { FormEvent } from 'react';
 import { CATEGORIES } from '../../lib/types';
-import type { Question, Quiz } from '../../lib/types';
+import type { Question, QuizEdit } from '../../lib/types';
 
 type Props = {
-  editingQuiz: Quiz | null;
+  editingQuiz: QuizEdit | null;
   title: string; setTitle: (v: string) => void;
   description: string; setDescription: (v: string) => void;
   category: string; setCategory: (v: string) => void;

@@ -1,5 +1,5 @@
 import { API } from './config';
-import type { AuthSession, GameHistory, Quiz, RoomView } from './types';
+import type { AuthSession, GameHistory, Quiz, QuizEdit, RoomView } from './types';
 
 function authHeader(token: string): Record<string, string> {
   return { Authorization: `Bearer ${token}` };
@@ -11,7 +11,7 @@ export async function fetchQuizzes(): Promise<Quiz[]> {
   return res.json();
 }
 
-export async function fetchMyQuizzes(token: string): Promise<Quiz[]> {
+export async function fetchMyQuizzes(token: string): Promise<QuizEdit[]> {
   const res = await fetch(`${API}/quizzes/mine`, {
     headers: authHeader(token),
     cache: 'no-store',
@@ -24,7 +24,7 @@ export async function fetchMyQuizzes(token: string): Promise<Quiz[]> {
 export async function createQuiz(
   token: string,
   payload: { title: string; description: string; category: string; isPublic: boolean; questions: unknown[] }
-): Promise<Quiz> {
+): Promise<QuizEdit> {
   const res = await fetch(`${API}/quizzes`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader(token) },
@@ -38,7 +38,7 @@ export async function updateQuiz(
   token: string,
   id: number,
   payload: { title: string; description: string; category: string; isPublic: boolean; questions: unknown[] }
-): Promise<Quiz> {
+): Promise<QuizEdit> {
   const res = await fetch(`${API}/quizzes/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader(token) },

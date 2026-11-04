@@ -1,4 +1,6 @@
 .auth-switch{display:block;margin:15px auto 0;border:0;background:none;color:#668831;font-size:11px;font-weight:700}
+.sso-button{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:44px;margin-top:18px;border-radius:8px;border:1px solid #e0e4db;background:#fff;font-size:13px;font-weight:600;color:#344138;cursor:pointer;transition:background .15s,box-shadow .15s}
+.sso-button:hover{background:#f7f8f2;box-shadow:0 2px 8px #17231e12}
 .owner-actions{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:9px;border-top:1px solid #f0f2ed}
 .owner-actions>span{font-size:9px;color:#87917f;font-weight:700}
 .owner-actions>div{display:flex;gap:12px}
